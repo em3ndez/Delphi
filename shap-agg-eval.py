@@ -5,7 +5,7 @@ import torch
 import numpy as np
 import pandas as pd
 import shap
-from tqdm import tqdm
+from tqdm.autonotebook import tqdm
 
 from model import DelphiConfig, Delphi
 from utils import get_batch, get_p2i
