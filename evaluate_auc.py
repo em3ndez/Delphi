@@ -219,7 +219,7 @@ def get_calibration_auc(j, k, d, p, offset=365.25, age_groups=range(45, 80, 5),
 
     # We need to take into account the offset t and use the tokens for prediction that are at least t before the event
     if precomputed_idx is None:
-        pred_idx = (d[1][wall[0]] <= d[3][wall].reshape(-1, 1) - offset).sum(1) - 1
+        pred_idx = (d[1][wall[0]] < d[3][wall].reshape(-1, 1) - offset).sum(1) - 1
     else:
         pred_idx = precomputed_idx[wall]  # It's actually much faster to precompute this
 
@@ -254,7 +254,7 @@ def get_calibration_auc(j, k, d, p, offset=365.25, age_groups=range(45, 80, 5),
         control = x[len(wk[0]):][a[len(wk[0]):]]
         case = x[: len(wk[0])][a[: len(wk[0])]]
 
-        if len(control) == 0 or len(case) == 0:
+        if len(control) < 2 or len(case) < 2:
             continue
 
         if use_delong:
@@ -275,9 +275,12 @@ def get_calibration_auc(j, k, d, p, offset=365.25, age_groups=range(45, 80, 5),
                 "n_healthy": len(control),
                 "n_diseased": len(case),
             }
-            out.append(out_item | auc_delong_dict)
+
             if n_bootstrap > 1:
                 out_item["bootstrap_idx"] = bootstrap_idx
+
+            out.append(out_item | auc_delong_dict)
+
     return out
 
 
