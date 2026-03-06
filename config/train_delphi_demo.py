@@ -15,7 +15,7 @@ wandb_run_name = 'run' + str(time.time())
 
 dataset = 'ukb_simulated_data'
 batch_size = 128
-block_size = 48
+block_size = 96
 data_fraction = 1.0
 
 n_layer = 12
