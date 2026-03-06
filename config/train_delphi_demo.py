@@ -21,7 +21,7 @@ data_fraction = 1.0
 n_layer = 12
 n_head = 12
 n_embd = 120
-dropout = 0.1
+dropout = 0.0
 weight_decay = 2e-1
 vocab_size = 1270
 
