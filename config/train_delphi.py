@@ -27,8 +27,8 @@ weight_decay = 2e-1
 vocab_size = 1270
 
 learning_rate = 6e-4 # with baby networks can afford to go a bit higher
-max_iters = 100000
-lr_decay_iters = 100000 # make equal to max_iters usually
+max_iters = 150000
+lr_decay_iters = 150000 # make equal to max_iters usually
 min_lr = 6e-5 # learning_rate / 10 usually
 beta2 = 0.99 # make a bit bigger because number of tokens per iter is small
 
