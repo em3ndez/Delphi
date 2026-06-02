@@ -28,7 +28,7 @@ The labels aren't required for training, but are later used in the downstream no
 The labels file should be a CSV with only one column:
 - `event_name`
 
-**None!** The row N+1 of this file corresponds to the N-th token. E.g. if in the `train.bin` file you used `token_id` 42 for `Common cold`, then the `Common cold` should be the 43-th row in the `labels.csv` file. This happens because we insert `no event` and `padding` tokens in the beginning of the file.
+**Note!** The row N+1 of this file corresponds to the N-th token. E.g. if in the `train.bin` file you used `token_id` 42 for `Common cold`, then the `Common cold` should be the 43-th row in the `labels.csv` file. This happens because we insert `no event` and `padding` tokens in the beginning of the file.
 
 Place this file into the `data/%your_name%` folder.
 
