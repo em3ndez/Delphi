@@ -82,13 +82,6 @@ def get_batch(ix, data, p2i, select='center', index='patient', padding='regular'
     tokens = torch.from_numpy(data[:, 2][batch_idx].astype(np.int64))
     ages = torch.from_numpy(data[:, 1][batch_idx].astype(np.float32))
 
-    # augment lifestyle tokens to avoid immortality bias
-    if lifestyle_augmentations:
-        lifestyle_idx = (tokens >= 3) * (tokens <= 11)
-        if lifestyle_idx.sum():
-            #TODO maybe use the same shift for all lifestyle tokens in the trajectory?
-            ages[lifestyle_idx] += torch.randint(-20*365, 365*40, (lifestyle_idx.sum(),), generator=gen).float()
-
     tokens = tokens.masked_fill(~mask, -1)
     ages = ages.masked_fill(~mask, mask_time)
 
@@ -104,8 +97,16 @@ def get_batch(ix, data, p2i, select='center', index='patient', padding='regular'
         pad = torch.randint(1, 36525, (len(ix), int(100 / no_event_token_rate)), generator=gen)
     else:
         raise NotImplementedError
-    
+
     m = ages.max(1, keepdim=True).values
+
+    # augment lifestyle tokens to avoid immortality bias
+    # NOTE: must happen AFTER computing m, otherwise augmented ages inflate m
+    # and let too many no-event padding tokens survive, hurting calibration
+    if lifestyle_augmentations:
+        lifestyle_idx = (tokens >= 3) * (tokens <= 11)
+        if lifestyle_idx.sum():
+            ages[lifestyle_idx] += torch.randint(-20*365, 365*40, (lifestyle_idx.sum(),), generator=gen).float()
 
     # stack "no event" tokens with real tokens
     tokens = torch.hstack([tokens, torch.zeros_like(pad, dtype=torch.int)])

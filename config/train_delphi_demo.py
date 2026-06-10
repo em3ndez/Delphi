@@ -15,13 +15,13 @@ wandb_run_name = 'run' + str(time.time())
 
 dataset = 'ukb_simulated_data'
 batch_size = 128
-block_size = 48
+block_size = 96
 data_fraction = 1.0
 
 n_layer = 12
 n_head = 12
 n_embd = 120
-dropout = 0.1
+dropout = 0.0
 weight_decay = 2e-1
 vocab_size = 1270
 

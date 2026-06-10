@@ -1,9 +1,6 @@
-import scipy.stats
-import scipy
-import warnings
 import torch
 from model import DelphiConfig, Delphi
-from tqdm import tqdm
+from tqdm.autonotebook import tqdm
 import pandas as pd
 import numpy as np
 import argparse
@@ -204,7 +201,9 @@ def get_auc_delong_var(healthy_scores, diseased_scores):
     return aucs[0], delongcov
 
 
-def get_calibration_auc(j, k, d, p, offset=365.25, age_groups=range(45, 80, 5), precomputed_idx=None, n_bootstrap=1, use_delong=False):
+def get_calibration_auc(j, k, d, p, offset=365.25, age_groups=range(45, 80, 5),
+                        precomputed_idx=None, n_bootstrap=1, use_delong=False):
+              
     age_step = age_groups[1] - age_groups[0]
 
     # Indexes of cases with disease k
@@ -220,7 +219,7 @@ def get_calibration_auc(j, k, d, p, offset=365.25, age_groups=range(45, 80, 5), 
 
     # We need to take into account the offset t and use the tokens for prediction that are at least t before the event
     if precomputed_idx is None:
-        pred_idx = (d[1][wall[0]] <= d[3][wall].reshape(-1, 1) - offset).sum(1) - 1
+        pred_idx = (d[1][wall[0]] < d[3][wall].reshape(-1, 1) - offset).sum(1) - 1
     else:
         pred_idx = precomputed_idx[wall]  # It's actually much faster to precompute this
 
@@ -252,10 +251,10 @@ def get_calibration_auc(j, k, d, p, offset=365.25, age_groups=range(45, 80, 5), 
         selected[indices] = True
         a[a] = selected
 
-        control = x[len(wk[0]) :][a[len(wk[0]) :]]
+        control = x[len(wk[0]):][a[len(wk[0]):]]
         case = x[: len(wk[0])][a[: len(wk[0])]]
 
-        if len(control) == 0 or len(case) == 0:
+        if len(control) < 2 or len(case) < 2:
             continue
 
         if use_delong:
@@ -276,9 +275,12 @@ def get_calibration_auc(j, k, d, p, offset=365.25, age_groups=range(45, 80, 5), 
                 "n_healthy": len(control),
                 "n_diseased": len(case),
             }
-            out.append(out_item | auc_delong_dict)
+
             if n_bootstrap > 1:
                 out_item["bootstrap_idx"] = bootstrap_idx
+
+            out.append(out_item | auc_delong_dict)
+
     return out
 
 
@@ -305,7 +307,7 @@ def evaluate_auc_pipeline(
     Args:
         model (torch.nn.Module): The loaded model set to eval().
         d100k (tuple): Data batch from get_batch.
-        delphi_labels (pd.DataFrame): DataFrame with label info (token names, etc. "delphi_labels_chapters_colours_icd.csv").
+        delphi_labels (pd.DataFrame): DataFrame with label info ("delphi_labels_chapters_colours_icd.csv").
         output_path (str | None): Directory where CSV files will be written. If None, files will not be saved.
         diseases_of_interest (np.ndarray or list, optional): If provided, these disease indices are used.
         filter_min_total (int): Minimum total token count to include a token.

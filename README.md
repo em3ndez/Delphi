@@ -43,7 +43,9 @@ Delphi-2M is trained on 400K patient health trajectories from the UK Biobank dat
 
 ## Data preparation
 
-To convert raw UK Biobank data into the format required for training, please refer to the `data/ukb_simulated_data/example_ukb_to_bin.ipynb` file.
+To reproduce Delphi's training data on the UK Biobank Research Analysis Platform (RAP), follow the end-to-end guide in [`supplementary/ukb_rap_training.md`](supplementary/ukb_rap_training.md), which runs `data/ukb_real_data/example_ukb_rap_convert_new.ipynb` (total cost under £10).
+
+Alternatively, to convert a raw UK Biobank ".tab" basket download locally, refer to the `data/ukb_simulated_data/example_ukb_to_bin.ipynb` file.
 
 If you are interested in using your own data, please refer to the `data/README.md` file for the details on how to transform it into a Delphi-compatible format.
 
