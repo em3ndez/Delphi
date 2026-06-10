@@ -218,7 +218,7 @@ class Delphi(nn.Module):
         #pos_emb = self.transformer.wpe(pos) # position embeddings of shape (1, t, n_embd)
         age_emb = self.transformer.wae(age.unsqueeze(-1)) # age embeddings of shape (b, t, n_embd)
         #age_emb = self.transformer.mlp(age_emb)
-        x = self.transformer.token_drop(tok_emb) * (1-self.config.token_dropout) 
+        x = self.transformer.token_drop(tok_emb)
         x = x + age_emb
         x = self.transformer.drop(x)
         

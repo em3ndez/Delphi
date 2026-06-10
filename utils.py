@@ -23,7 +23,7 @@ def get_p2i(data):
     return np.array(p2i)
 
 
-def get_batch(ix, data, p2i, select='center', index='patient', padding='regular',
+def get_batch(ix, data, p2i, select='random', index='patient', padding='regular',
               block_size=48, device='cpu', lifestyle_augmentations=False, 
               no_event_token_rate=5, cut_batch=False):
     """
@@ -34,7 +34,7 @@ def get_batch(ix, data, p2i, select='center', index='patient', padding='regular'
         ix: list of indices to get data from
         data: numpy array of the dataset
         p2i: numpy array of the patient to index mapping
-        select: 'center', 'right', 'smart_random', 'smart_right'
+        select: 'left', 'right', or 'random' (window taken from the start, end, or a random offset of the trajectory)
         index: 'patient', 'random'
         padding: 'regular', 'random'
         block_size: size of the block to get

@@ -26,7 +26,7 @@ wandb_project = 'delphi'
 wandb_run_name = 'run' + str(time.time())
 
 # data
-dataset = 'ukb_data'
+dataset = 'ukb_simulated_data'
 gradient_accumulation_steps = 1  # used to simulate larger batch sizes
 batch_size = 128  # if gradient_accumulation_steps > 1, this is the micro-batch size
 block_size = 24
