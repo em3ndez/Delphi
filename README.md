@@ -93,6 +93,10 @@ There are the following notebooks in the root folder:
 
 The model and weights are provided for research purposes only and must not be used for clinical decision-making.
 
+For any commercial usage, please contact [DKFZ Innovation Management](mailto:innovation@dkfz-heidelberg.de). 
+
+A patent has been filed for the use of generative transformer architectures to model competing risk and timings of diseases (application number: PCT/EP2025/065771; applicants: DKFZ, EMBL), with Moritz Gerstung, Artem Shmatko, Tom Fitzgerald, Ewan Birney, Kumar Gaurav and Alex W Jung listed as inventors.
+
 ## Citation
 
 ```bibtex
